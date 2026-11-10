@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Users</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <aside class="sidebar">
+
+            <h2>Admin Panel</h2>
+
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/users">Users</a>
+            </nav>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <h1>Users</h1>
+                <span>Admin</span>
+            </header>
+
+            <section class="content">
+                 {% include "_messages.html" %}
+                <h2>User Management</h2>
+
+                <a href="/users/create">+ Add User</a>
+
+                
+                <form method="GET" action="/users" class="search-form">
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="Search by name or email..."
+                        value="{{ search }}"
+                    >
+                    <button type="submit">Search</button>
+                    <a href="/users">Clear</a>
+                </form>
+
+
+                <br><br>
+
+                <table border="1" cellpadding="10">
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for user in users %}
+
+                        <tr>
+
+                            <td>{{ user["id"] }}</td>
+
+                            <td>{{ user["name"] }}</td>
+
+                            <td>{{ user["email"] }}</td>
+
+                            <td>{{ user["status"] }}</td>
+
+                            <td>
+                                <a href="/users/edit/{{ user['id'] }}">
+                                    <button type="button">Edit</button>
+                                </a>
+
+                                <form
+                                    action="/users/delete/{{ user['id'] }}"
+                                    method="POST"
+                                    style="display: inline;"
+                                    onsubmit="return confirm('Are you sure you want to delete this user?');"
+                                >
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                
+                <!-- Pagination -->
+                <div class="pagination">
+
+                    {% if page > 1 %}
+                        <a href="{{ url_for('users', page=page-1, search=search) }}">
+                            &laquo; Previous
+                        </a>
+                    {% endif %}
+
+                    {% set start_page = [1, page - 2] | max %}
+                    {% set end_page = [total_pages, page + 2] | min %}
+
+                    {% if start_page > 1 %}
+                        <a href="{{ url_for('users', page=1, search=search) }}">1</a>
+                        {% if start_page > 2 %}
+                            <span class="page-dots">...</span>
+                        {% endif %}
+                    {% endif %}
+
+                    {% for page_num in range(start_page, end_page + 1) %}
+                        {% if page_num == page %}
+                            <span class="current-page">{{ page_num }}</span>
+                        {% else %}
+                            <a href="{{ url_for('users', page=page_num, search=search) }}">
+                                {{ page_num }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if end_page < total_pages %}
+                        {% if end_page < total_pages - 1 %}
+                            <span class="page-dots">...</span>
+                        {% endif %}
+                        <a href="{{ url_for('users', page=total_pages, search=search) }}">
+                            {{ total_pages }}
+                        </a>
+                    {% endif %}
+
+                    {% if page < total_pages %}
+                        <a href="{{ url_for('users', page=page+1, search=search) }}">
+                            Next &raquo;
+                        </a>
+                    {% endif %}
+
+                </div>
+
+                <p class="pagination-info">
+                    Page {{ page }} of {{ total_pages }}
+                    &mdash; {{ total_users }} users total
+                </p>
+
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

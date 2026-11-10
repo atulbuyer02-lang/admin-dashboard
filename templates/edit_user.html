@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit User</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <aside class="sidebar">
+
+            <h2>Admin Panel</h2>
+
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/users">Users</a>
+            </nav>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <h1>Edit User</h1>
+                <span>Admin</span>
+            </header>
+
+            <section class="content">
+
+                <h2>Edit User #{{ user["id"] }}</h2>
+
+                <form method="POST">
+
+                    <div>
+                        <label>Name</label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ user['name'] }}"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label>Email</label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ user['email'] }}"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label>Status</label>
+
+                        <select name="status">
+
+                            <option
+                                value="active"
+                                {% if user["status"] == "active" %}selected{% endif %}
+                            >
+                                Active
+                            </option>
+
+                            <option
+                                value="inactive"
+                                {% if user["status"] == "inactive" %}selected{% endif %}
+                            >
+                                Inactive
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <button type="submit">
+                        Update User
+                    </button>
+
+                </form>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

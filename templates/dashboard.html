@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Admin Panel</h2>
+
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/users">Users</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <header class="topbar">
+                <h1>Dashboard</h1>
+                <span>Admin</span>
+            </header>
+
+            <section class="content">
+
+                <h2>Welcome to Admin Dashboard</h2>
+
+                <!-- Live Statistics Cards -->
+                <div class="cards">
+
+                    <div class="card">
+                        <h3>Total Users</h3>
+                        <p>{{ total_users }}</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Active Users</h3>
+                        <p>{{ active_users }}</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Inactive Users</h3>
+                        <p>{{ inactive_users }}</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+            
+            <div class="recent-users">
+
+                <div class="recent-users-header">
+                    <h2>Recent Users</h2>
+                    <a href="/users">View All Users &rarr;</a>
+                </div>
+
+                <div class="recent-users-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for user in recent_users %}
+                            <tr>
+                                <td>{{ user['name'] }}</td>
+                                <td>{{ user['email'] }}</td>
+                                <td>
+                                    <span class="status-badge
+                                        {% if user['status']|lower == 'active' %}
+                                            status-active
+                                        {% else %}
+                                            status-inactive
+                                        {% endif %}">
+                                        {{ user['status'] }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3">No users found yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="chart-card">
+                <h2>User Status</h2>
+                <div class="chart-wrap">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+
+
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+    new Chart(document.getElementById("statusChart"), {
+        type: "doughnut",
+        data: {
+            labels: ["Active", "Inactive"],
+            datasets: [{
+                data: [{{ active_users }}, {{ inactive_users }}],
+                backgroundColor: ["#16a34a", "#dc2626"],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: "bottom" } }
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+# secrets and local data
+.env
+database.db
+
+# python
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/

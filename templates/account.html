@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="auth-box">
+        <h1>My Account</h1>
+
+        {% include "_messages.html" %}
+
+        <p><strong>Name:</strong> {{ user['name'] }}</p>
+        <p><strong>Email:</strong> {{ user['email'] }}</p>
+        <p><strong>Status:</strong> {{ user['status'] }}</p>
+
+        {% if user['role'] == 'admin' %}
+            <p class="auth-switch"><a href="/">Go to admin dashboard</a></p>
+        {% endif %}
+
+        <p class="auth-switch"><a href="/logout">Log out</a></p>
+    </div>
+
+</body>
+
+</html>

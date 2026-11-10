@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="auth-box">
+        <h1>Log in</h1>
+
+        {% include "_messages.html" %}
+
+        <form method="POST" action="/login">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email"
+                   value="{{ form_data.get('email', '') }}" autofocus>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+
+            <button type="submit">Log in</button>
+        </form>
+
+        <p class="auth-switch">No account yet? <a href="/register">Register</a></p>
+    </div>
+
+</body>
+
+</html>

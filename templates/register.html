@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ heading }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="auth-box">
+        <h1>{{ heading }}</h1>
+
+        {% include "_messages.html" %}
+
+        <form method="POST" action="{{ action }}">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name"
+                   value="{{ form_data.get('name', '') }}" autofocus>
+
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email"
+                   value="{{ form_data.get('email', '') }}">
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+
+            <label for="confirm_password">Confirm password</label>
+            <input type="password" id="confirm_password" name="confirm_password">
+
+            <button type="submit">Create account</button>
+        </form>
+
+        {% if action == '/register' %}
+            <p class="auth-switch">Already registered? <a href="/login">Log in</a></p>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
